@@ -17,27 +17,7 @@ required.packages <- c("ggplot2", "binom", "plyr", "stats")
 # automatically install packages
 new.packages <- required.packages[!(required.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
-invisible(lapply(required.packages, require, char=T))
-
-#############################################
-# SPECIFY CONDITION NAMES 
-# AND NUMBER OF PATIENTS PER CONDITION
-# AS ARGUMENTS
-conditionx <- "conditionx"
-nx <- 20
-conditiony <- "conditiony"
-ny <- 187
-args <- commandArgs(TRUE)
-conditionx <- args[[1]]
-nx <- as.integer(args[[2]])
-conditiony <- args[[3]]
-ny <- as.integer(args[[4]])
-
-
-#############################################
-# ROUND AXIS LIMITS TO WHOLE NUMBER OF PATIENTS
-xmax <- ceiling(xmax*nx)/nx
-ymax <- ceiling(ymax*ny)/ny
+invisible(lapply(required.packages, require, char=TRUE))
 
 #############################################
 # READ THREE COLUMNS FROM STANDARD INPUT:
@@ -45,11 +25,41 @@ ymax <- ceiling(ymax*ny)/ny
 # 2) NUMBER OF MUTATIONS IN CONDITION 1 (X-axis)
 # 3) NUMBER OF MUTATIONS IN CONDITION 2 (Y-axis)
 
-d <- read.table(file("stdin"), header=F)
+d <- read.table(file("stdin"), header=TRUE)
+
+# get the condition names from the input file
+conditionx <- names(d)[2]
+conditiony <- names(d)[3]
 names(d)[1:3] <- c("gene", "x", "y")
+
+# number of patients in each condition is taken from the first line only
+nx <- d[1,4]
+ny <- d[1,5]
+
 # ALTERNATIVELY:
 # d <- scan(file("stdin"), what=list(gene="",x=0,nx=0,y=0,ny=0), quiet=TRUE);
 # d <- as.data.frame(d)
+
+#############################################
+# SPECIFY CONDITION NAMES 
+# AND NUMBER OF PATIENTS PER CONDITION
+# AS ARGUMENTS
+# conditionx <- "conditionx"
+# nx <- 20
+# conditiony <- "conditiony"
+# ny <- 187
+
+args <- commandArgs(TRUE)
+# conditionx <- args[[1]]
+# nx <- as.integer(args[[2]])
+# conditiony <- args[[3]]
+# ny <- as.integer(args[[4]])
+
+
+#############################################
+# ROUND AXIS LIMITS TO WHOLE NUMBER OF PATIENTS
+xmax <- ceiling(xmax*nx)/nx
+ymax <- ceiling(ymax*ny)/ny
 
 #############################################
 # GROUP GENES WITH THE SAME RECURRENCE
