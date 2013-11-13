@@ -1,6 +1,4 @@
-# x: 20 MDS patients
-# y: 187 AML patients
-#gene	MDS	AML	nMDS	nAML
+gene	MDS	AML	nMDS	nAML
 SF3B1	11	1	20	187
 CUX1	2	0	20	187
 RBBP6	2	0	20	187
